@@ -14,7 +14,8 @@ public class player : MonoBehaviour
     private bool podePular;
 
     public Transform ponto;
-    
+
+    public Joystick joy;
 
     void Start()
     {
@@ -27,15 +28,14 @@ public class player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveControl();
-        jumpControl();
+        moveControl();        
     }
 
     private void moveControl()
     {
         //1 --> d, seta direita
         //-1 --> a, seta esq
-        float movimento = Input.GetAxisRaw("Horizontal");
+        float movimento = joy.Horizontal;
 
         if (movimento > 0)
         {
@@ -55,10 +55,10 @@ public class player : MonoBehaviour
 
         controladorAnimacao.SetFloat("movimento", Mathf.Abs(movimento));
     }
-    private void jumpControl()
+    public void jumpControl()
     {
         podePular = Physics2D.Linecast(transform.position, ponto.position, 1 << LayerMask.NameToLayer("Floor"));
-        if (Input.GetButtonDown("Jump") && podePular)
+        if (podePular)
         {
             bodyControl.AddForce(Vector2.up * forcaPulo);            
         }
